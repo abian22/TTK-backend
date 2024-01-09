@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema
 
 const userSchema = mongoose.Schema({
   username: {
@@ -18,20 +19,14 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  profileImg: {
+    type: String,
+    default: "https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg"
+  },
   role: {
     type: String,
     allowNull: true,
     default: "user",
-  },
-  followers: {
-    type: Number,
-    allowNull: false,
-    default: 0,
-  },
-  following: {
-    type: Number,
-    allowNull: false,
-    default: 0,
   },
   live: {
     type: Boolean,
@@ -43,6 +38,12 @@ const userSchema = mongoose.Schema({
     allowNull: false,
     default: 0,
   },
-});
+  followers: [{type: ObjectId, ref:"User"}],
+  following: [{type: ObjectId, ref:"User"}],
+},
+{
+  timestamps:true
+}
+);
 
 module.exports = mongoose.model("User", userSchema);
