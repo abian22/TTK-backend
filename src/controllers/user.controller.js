@@ -112,7 +112,9 @@ async function deleteMe(req, res) {
 
     return res.status(200).json({ message: "User deleted" });
   } catch (error) {
-    return res.status(500).json({ error: "User delete failed" + error.message });
+    return res
+      .status(500)
+      .json({ error: "User delete failed" + error.message });
   }
 }
 
@@ -124,5 +126,5 @@ module.exports = {
   updateUser,
   updateMe,
   deleteUser,
-  deleteMe
+  deleteMe,
 };

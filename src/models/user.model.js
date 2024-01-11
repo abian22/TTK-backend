@@ -33,7 +33,7 @@ const userSchema = mongoose.Schema({
     allowNull: false,
     default: false,
   },
-  videosUploaded: {
+  filesUploaded: {
     type: Number,
     allowNull: false,
     default: 0,

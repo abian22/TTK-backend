@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Schema;
+const commentSchema = require("./comment.model");
 
 const videoSchema = mongoose.Schema(
   {
@@ -9,13 +10,11 @@ const videoSchema = mongoose.Schema(
     },
     description: {
       type: String,
-      require: true,
     },
     likes: {
       type: Number,
       default: 0,
     },
-    comments: [commentSchema],
   },
   { timestamps: true }
 );

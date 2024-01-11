@@ -17,7 +17,7 @@ const commentSchema = mongoose.Schema(
         default:0
     }, //Not sure about responses field
     likes: {
-      tpye: Number,
+      type: Number,
       default: 0,
     },
   },
