@@ -1,10 +1,12 @@
 const router = require("express").Router();
 const {
-  uploadVideo,
-  deleteVideo,
+  uploadMyVideo,
+  deleteMyVideo,
   getVideos,
   getMyVideos,
-  getSomeoneVideos
+  getSomeoneVideos,
+  deleteVideo,
+  uploadVideo
 } = require("../controllers/video.controller");
 
 const { checkAuth, checkAdmin } = require("../middleware/auth");
@@ -12,7 +14,10 @@ const { checkAuth, checkAdmin } = require("../middleware/auth");
 router.get("/", checkAuth, getVideos); //checked
 router.get("/:userId", checkAuth, getSomeoneVideos); //checked
 router.get("/me", checkAuth, getMyVideos); //checked
-router.post("/", checkAuth, uploadVideo); //checked
-router.delete("/:videoId", checkAuth, deleteVideo); //checked
+router.post("/", checkAuth, uploadMyVideo); //checked
+router.post("/:userId", checkAuth, checkAdmin, uploadVideo) //checked
+router.delete("/me/:videoId", checkAuth, deleteMyVideo); //checked
+router.delete("/:videoId", checkAuth, checkAdmin, deleteVideo); //checked
+
 
 module.exports = router;

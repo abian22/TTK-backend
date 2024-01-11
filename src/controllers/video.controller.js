@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-async function uploadVideo(req, res) {
+async function uploadMyVideo(req, res) {
   upload.single("video")(req, res, async function (err) {
     if (err) {
       console.error("Error during video upload:", err);
@@ -24,7 +24,6 @@ async function uploadVideo(req, res) {
         .status(500)
         .json({ error: "Error during video upload", details: err.message });
     }
-
     const user = res.locals.user;
 
     if (!user) {
@@ -52,7 +51,45 @@ async function uploadVideo(req, res) {
   });
 }
 
-async function deleteVideo(req, res) {
+async function uploadVideo(req, res) {
+  upload.single("video")(req, res, async function (err) {
+    if (err) {
+      console.error("Error during video upload:", err);
+      return res
+        .status(500)
+        .json({ error: "Error during video upload", details: err.message });
+    }
+
+    const user = res.locals.user;
+
+    if (!user) {
+      console.error("User not authenticated");
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    const userId = req.params.userId;
+
+    const newVideo = new Video({
+      uploadedBy: userId,
+      description: req.body.description,
+    });
+
+    try {
+      const savedVideo = await newVideo.save();
+      console.log("Video saved", savedVideo);
+
+      res.send("Video uploaded");
+    } catch (error) {
+      console.error("Error saving the video:", error);
+      return res.status(500).json({
+        error: "Error saving the video",
+        details: error.message,
+      });
+    }
+  });
+}
+
+async function deleteMyVideo(req, res) {
   const user = res.locals.user;
 
   try {
@@ -93,11 +130,13 @@ async function getMyVideos(req, res) {
   try {
     const myVideos = await Video.find({ uploadedBy: user._id });
     if (!myVideos) {
-        return res.status(404).json({ error: "You have no videos yet" });
-      }
-    return res.status(200).json(myVideos)
+      return res.status(404).json({ error: "You have no videos yet" });
+    }
+    return res.status(200).json(myVideos);
   } catch (error) {
-    return res.status(500).json({ error: "Error retrieving your videos", details: error.message });
+    return res
+      .status(500)
+      .json({ error: "Error retrieving your videos", details: error.message });
   }
 }
 
@@ -112,8 +151,37 @@ async function getSomeoneVideos(req, res) {
 
     return res.status(200).json(videos);
   } catch (error) {
-    return res.status(500).json({ error: "Error retrieving videos", details: error.message });
+    return res
+      .status(500)
+      .json({ error: "Error retrieving videos", details: error.message });
   }
 }
 
-module.exports = { uploadVideo, deleteVideo, getVideos, getMyVideos, getSomeoneVideos };
+async function deleteVideo(req, res) {
+  try {
+    const videos = await Video.find(req.params.videoId);
+
+    if (!videos) {
+      return res.status(404).json({ error: "Video not found" });
+    }
+    await existingVideo.deleteOne();
+    console.log("video deleted");
+    res.json({ message: "video deleted" });
+  } catch (error) {
+    console.error("error deleting the video", error);
+    return res.status(500).json({
+      error: "Error deleting the video",
+      details: error.message,
+    });
+  }
+}
+
+module.exports = {
+  uploadMyVideo,
+  deleteMyVideo,
+  getVideos,
+  getMyVideos,
+  getSomeoneVideos,
+  deleteVideo,
+  uploadVideo,
+};
