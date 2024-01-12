@@ -22,7 +22,7 @@ router.post("/signUp", signUp); //checked
 router.post("/login", login); //checked
 router.put("/me", checkAuth, updateMe) //checked
 router.put("/:id", checkAuth, checkAdmin, updateUser) //checked
-router.delete("/me", checkAuth, deleteMe)
+router.delete("/me", checkAuth, deleteMe) //checked
 router.delete("/:id", checkAuth, checkAdmin, deleteUser) //checked
 
 

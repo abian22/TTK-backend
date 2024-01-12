@@ -46,7 +46,7 @@ async function createUser(req, res) {
       console.error("Error creating user: User is falsy");
       return res.status(500).send("Failed to create user");
     }
-    res.status(201).json({ message: "User created", user: user });
+    res.status(201).json({ message: "User created", user: user.username });
   } catch (error) {
     console.error("Error creating user:", error.message);
     res.status(500).send("Failed to create user");

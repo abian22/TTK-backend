@@ -11,7 +11,7 @@ const signUp = async (req, res) => {
     const token = jwt.sign({ email: user.email }, process.env.SECRET, {
       expiresIn: "1h",
     });
-    console.log("user created");
+    console.log("user created", user.username);
     return res.status(201).json({ token: token });
   } catch (error) {
     console.error(error);
@@ -39,7 +39,7 @@ const login = async (req, res) => {
       const token = jwt.sign({ email: user.email }, process.env.SECRET, {
         expiresIn: "1h",
       });
-      console.log("User logged");
+      console.log("User logged:", user.username);
       return res.status(201).json({ token: token });
     });
   } catch (error) {
