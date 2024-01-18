@@ -7,19 +7,27 @@ const commentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    user: {
+    commentedVideo: {
+      type: ObjectId,
+      ref:"Video"
+    },
+    commentedBy: {
       type: ObjectId,
       ref: "User",
       required: true,
     },
-    responses: {
+    replies: {
         type: Number,
         default:0
-    }, //Not sure about responses field
+    }, //Not sure about replies field
     likes: {
       type: Number,
       default: 0,
     },
+    likedBy: [{
+      type: ObjectId,
+      ref: "User",
+   }]
   },
   { timestamps: true }
 );

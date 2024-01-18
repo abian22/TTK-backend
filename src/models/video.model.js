@@ -18,6 +18,18 @@ const videoSchema = mongoose.Schema(
     filePath: {
       type: String, 
     },
+    comments: [
+      {
+        _id: false,//not sure about this
+        commentId: {
+          type: ObjectId,
+          ref: "Comment",
+        },
+        text: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
