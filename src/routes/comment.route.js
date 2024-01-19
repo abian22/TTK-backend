@@ -1,16 +1,18 @@
-const router = require("express").Router();
+const router = require("express").Router()
 const {
   postMyComment,
   getComments,
   getCommentsOfVideo,
-  deleteMyComment
-} = require("../controllers/comment.controller");
+  deleteMyComment,
+  deleteComment
+} = require("../controllers/comment.controller")
 
-const { checkAuth, checkAdmin } = require("../middleware/auth");
+const { checkAuth, checkAdmin } = require("../middleware/auth")
 
-router.get("/", checkAuth, checkAdmin, getComments);
-router.get("/:videoId", checkAuth, getCommentsOfVideo);
-router.post("/:videoId", checkAuth, postMyComment);
-router.delete("/:videoId/:commentId", checkAuth, deleteMyComment)
+router.get("/", checkAuth, checkAdmin, getComments) //checked
+router.get("/:videoId", checkAuth, getCommentsOfVideo) //checked
+router.post("/:videoId", checkAuth, postMyComment) //checked
+router.delete("/:commentId", checkAuth, checkAdmin, deleteComment) //checked
+router.delete("/:videoId/:commentId", checkAuth, deleteMyComment) //checked
 
-module.exports = router;
+module.exports = router
