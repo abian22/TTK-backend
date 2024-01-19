@@ -11,7 +11,9 @@ async function getAllUsers(req, res) {
       return res.status(200).json(users);
     }
   } catch (error) {
-    res.status(500).send(error.message);
+    return res
+      .status(500)
+      .json({ error: "Error finding users: " + error.message });
   }
 }
 
@@ -69,7 +71,7 @@ async function updateUser(req, res) {
     }
     return res.status(200).json({ message: "User updated" });
   } catch (error) {
-    return res.status(500).json({ error: "User update failed" });
+    return res.status(500).json({ error: "Error updating user: " + error.message });
   }
 }
 
@@ -90,7 +92,7 @@ async function updateMe(req, res) {
       return res.status(404).send("User not found");
     }
   } catch (error) {
-    return res.status(500).send(error.message);
+    return res.status(500).json({ error: "Error updating user: " + error.message });
   }
 }
 
