@@ -39,5 +39,3 @@ async function start() {
 
 start()
 
-//Day5MXgJVkdqXjvj
-//mongodb+srv://Abian:<password>@cluster0.jdwi1h4.mongodb.net/?retryWrites=true&w=majoritya
