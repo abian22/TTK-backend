@@ -4,7 +4,9 @@ const {
   getComments,
   getCommentsOfVideo,
   deleteMyComment,
-  deleteComment
+  deleteComment,
+  updateMyComment,
+  updateComment
 } = require("../controllers/comment.controller")
 
 const { checkAuth, checkAdmin } = require("../middleware/auth")
@@ -14,5 +16,7 @@ router.get("/:videoId", checkAuth, getCommentsOfVideo) //checked
 router.post("/:videoId", checkAuth, postMyComment) //checked
 router.delete("/:commentId", checkAuth, checkAdmin, deleteComment) //checked
 router.delete("/:videoId/:commentId", checkAuth, deleteMyComment) //checked
+router.put("/myComment/:commentId", checkAuth, updateMyComment) //checked
+router.put("/:commentId", checkAuth, checkAdmin, updateComment) //checked
 
 module.exports = router

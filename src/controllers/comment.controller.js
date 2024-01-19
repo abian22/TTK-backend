@@ -109,10 +109,53 @@ async function deleteComment(req, res) {
 }
 
 async function updateMyComment(req, res) {
+  const userId = res.locals.user.id
+  const commentIdToUpdate = req.params.commentId
   try {
+    if (!commentIdToUpdate) {
+      return res.status(404).json({ message: "Comment not found" })
+    }
+    // Find the comment by its ID
+    const commentToUpdate = await Comment.findById(commentIdToUpdate)
 
+    // Verify if the current user is the author of the comment
+    if (commentToUpdate.commentedBy.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized: User cannot delete this comment" })
+    }
+    //updating and saving the comment
+    await Comment.updateOne(
+      { _id: commentIdToUpdate },
+      { $set: { text: req.body.text } }
+    )
+    res.status(200).json({ message: "Comment updated successfully" })
   } catch (error) {
-    
+    console.error("Error updating the comment:", error)
+    return res.status(500).json({
+      error: "Error updating the comment",
+      details: error.message,
+    })
+  }
+}
+
+async function updateComment(req, res) {
+  const commentIdToUpdate = req.params.commentId
+  try {
+    if (!commentIdToUpdate) {
+      return res.status(404).json({ message: "Comment not found" })
+    }
+    await Comment.updateOne(
+      { _id: commentIdToUpdate },
+      { $set: { text: req.body.text } }
+    )
+    res.status(200).json({ message: "Comment updated successfully" })
+  } catch (error) {
+    console.error("Error updating the comment:", error)
+    return res.status(500).json({
+      error: "Error updating the comment",
+      details: error.message,
+    })
   }
 }
 
@@ -121,5 +164,7 @@ module.exports = {
   getComments,
   getCommentsOfVideo,
   deleteMyComment,
-  deleteComment
+  deleteComment,
+  updateMyComment,
+  updateComment,
 }
